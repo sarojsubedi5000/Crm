@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Management</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-top: 30px;
+        }
+
+        /* Header */
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Form Styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-top: 5px;
+        }
+
+        input[type="text"], input[type="email"] {
+            width: 100%;
+        }
+
+        select {
+            width: 150px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .add-customer-form {
+            width: 50%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .action-buttons a, .action-buttons button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .action-buttons a:hover, .action-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Export Button */
+        .export-btn {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .export-btn button {
+            background-color: #FF9800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .export-btn button:hover {
+            background-color: #e68900;
+        }
+
+        /* Filter Styles */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-container label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .filter-container select {
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Customer Management System</h1>
+
+        <!-- Filter Form -->
+        <div class="filter-container">
+            <form method="get" action="/">
+                <label for="status">Filter by Status:</label>
+                <select name="status" onchange="this.form.submit()">
+                    <option value="All" {{ 'selected' if status_filter == 'All' else '' }}>All</option>
+                    <option value="Pending" {{ 'selected' if status_filter == 'Pending' else '' }}>Pending</option>
+                    <option value="Completed" {{ 'selected' if status_filter == 'Completed' else '' }}>Completed</option>
+                    <option value="In Progress" {{ 'selected' if status_filter == 'In Progress' else '' }}>In Progress</option>
+                    <option value="Started" {{ 'selected' if status_filter == 'Started' else '' }}>Started</option>
+                    
+                </select>
+            </form>
+        </div>
+
+        <!-- Export Button -->
+        <div class="export-btn">
+            <a href="/export">
+                <button type="button">Export to Excel</button>
+            </a>
+        </div>
+
+        <!-- Customer Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Task</th>
+                    <th>User</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer_id, customer in customers.items() %}
+                <tr>
+                    <td>{{ customer_id }}</td>
+                    <td>{{ customer.Name }}</td>
+                    <td>{{ customer.Email }}</td>
+                    <td>{{ customer.Phone }}</td>
+                    <td>{{ customer.Task }}</td>
+                    <td>{{ customer.User }}</td>
+                    <td>{{ customer.Status }}</td>
+                    <td>{{ customer.Date }}</td>
+                    <td class="action-buttons">
+                        <a href="/edit/{{ customer_id }}">Edit</a>
+                        <form method="post" action="/delete/{{ customer_id }}" style="display:inline;">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Add Customer Form -->
+        <div class="add-customer-form">
+            <h2>Add Customer</h2>
+            <form method="post" action="/add">
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="phone" placeholder="Phone" required>
+                <input type="text" name="task" placeholder="Task" required>
+                <input type="text" name="user" placeholder="User" required>
+                <select name="status" required>
+                    <option value="Started">Started</option>.
+                    <option value="In Progress">In Progress</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                   
+                    
+                </select>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

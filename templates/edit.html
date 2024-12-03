@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Customer</title>
+</head>
+<body>
+    <h1>Edit Customer</h1>
+    <form method="post">
+        <input type="text" name="name" value="{{ customer.Name }}" required>
+        <input type="email" name="email" value="{{ customer.Email }}" required>
+        <input type="text" name="phone" value="{{ customer.Phone }}" required>
+        <input type="text" name="task" value="{{ customer.Task }}" required>
+        <select name="status" required>
+            <option value="Pending" {{ 'selected' if customer.Status == 'Pending' else '' }}>Pending</option>
+            <option value="Completed" {{ 'selected' if customer.Status == 'Completed' else '' }}>Completed</option>
+            <option value="In Progress" {{ 'selected' if customer.Status == 'In Progress' else '' }}>In Progress</option>
+        </select>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>
