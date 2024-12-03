@@ -1,0 +1,34 @@
+{
+    "customers": {
+        "1": {
+            "Name": "kiran subedi",
+            "Email": "kiran@gmail.com",
+            "Phone": "9868132052",
+            "Task": "Call",
+            "Status": "Completed"
+        },
+        "2": {
+            "Name": "saroj subedi",
+            "Email": "saroj@hitechnepal.com.np",
+            "Phone": "9868132052",
+            "Task": "Visit",
+            "Status": "Pending"
+        },
+        "3": {
+            "Name": "bharat",
+            "Email": "bharat@gmail.com",
+            "Phone": "9842718264",
+            "Task": "Call",
+            "Status": "Pending"
+        },
+        "9": {
+            "Name": "abc",
+            "Email": "saroj@hitechnepal.com.np",
+            "Phone": "9868132052",
+            "Task": "visit",
+            "Status": "In Progress",
+            "Date": "2024-12-01 17:45:26"
+        }
+    },
+    "last_customer_id": 10
+}
